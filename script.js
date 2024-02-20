@@ -6,30 +6,30 @@ var generateBtn = document.getElementById("generate");
 async function generatePlan() {
     var avgCalMeal = calories.value / numMeals.value;
     let allFood = [];
-    var pages = 1;
-    const initialData = await fetchFood(pages);
-    const totalPages = initialData.totalPages;
-    let pageToVist = Math.floor(Math.random() * totalPages) + 1;
+    let fdcId = 167698;
 
-    const currentFoods = await fetchFood(pageToVist);
-    const filteredFoods = currentFoods.foods.filter(food => {
-        const foodCalories = food.foodNutrients.find(nutrient =>
-            nutrient.nutrientId === 1008 &&
-            nutrient.value >= avgCalMeal - 100 &&
-            nutrient.value <= avgCalMeal + 100);
-        return foodCalories;
-    })
-    allFood = allFood.concat(filteredFoods);
+    const currentFoods = await fetchFood(fdcId);
 
-    const randomFood = allFood[Math.floor(Math.random() * allFood.length)];
-    console.log(allFood);
+    // const filteredFoods = currentFoods.foods.filter(food => {
+    //     const foodCalories = food.foodNutrients.find(nutrient =>
+    //         nutrient.nutrientId === 1008 &&
+    //         nutrient.value >= avgCalMeal - 50 &&
+    //         nutrient.value <= avgCalMeal + 50);
+    //     return foodCalories;
+    // });
 
-    return randomFood;
+    // allFood = allFood.concat(filteredFoods);
+
+    // const randomFood = allFood[Math.floor(Math.random() * allFood.length)];
+    // console.log(randomFood);
+    console.log(currentFoods);
+
+    // return randomFood;
 }
 
-async function fetchFood(page) {
+async function fetchFood(fdcId) {
     const config = await fetch("config.json").then(response => response.json());
-    const apiUrl = `https://api.nal.usda.gov/fdc/v1/foods/search?query=&api_key=${config.apikey}&page=${page}`;
+    const apiUrl = `https://api.nal.usda.gov/fdc/v1/food/${fdcId}?api_key=${config.apikey}`;
     const response = await fetch(apiUrl);
     const data = await response.json();
     return data;

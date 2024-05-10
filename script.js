@@ -10,7 +10,7 @@ async function generatePlan() {
 }
 
 async function fetchFood(calories) {
-    const response = await fetch(`/getData/${calories}`);
+    const response = await fetch(`/getData?calories=${calories}&numMeals=${numMeals}`);
     const data = await response.json();
     return data;
 }
